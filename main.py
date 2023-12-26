@@ -50,8 +50,8 @@ def fitness_function(solution):
     def five_logistic(u, A, B, C, D, G):
         return ((A - D) / ((1 + (u / C) ** B) ** G)) + D 
  ### Four parameter logistic function ###
-    def four_logistic(u, A, M, T, N):
-        return A * ((1 + M*math.exp(-u/T))/(1 + N*math.exp(-u/T))) 
+    def four_logistic(u, A, B, C, D):
+        return ((A - D) / ((1 + (u / C) ** B))) + D 
 
     if function_name == 'five logistic':
         for p in range(place):
@@ -61,7 +61,7 @@ def fitness_function(solution):
             estimated.iloc[:,p] = gcap.iat[p,0]*.001*(wind_speed.iloc[:,p].apply(lambda x: linear_function(x, solution[0], solution[1], solution[2])))
     elif function_name == 'four logistic':
         for p in range(place):
-            estimated.iloc[:,p] = gcap.iat[p,0]*.001*(wind_speed.iloc[:,p].apply(lambda x: four_logistic(x, solution[0], solution[1], solution[2], solution[3])))
+            estimated.iloc[:,p] = gcap.iat[p,0]*.001*(four_logistic(wind_speed.iloc[:,p], solution[0], solution[1], solution[2], solution[3]))
 
     ### Root Mean Squared Error ###
     SE = (np.square(observed.iloc[:,0] - estimated.sum(axis=1).iloc[:])).tolist()
@@ -119,7 +119,7 @@ if function_name == 'five logistic':
 elif function_name == 'linear':
     pop_size = 50
 elif function_name == 'four logistic':
-    pop_size = 125
+    pop_size = 200
 
 c1 = 2.0
 c2 = 2.0
@@ -129,9 +129,10 @@ best_solution, best_fitness = model.solve(problem_dict, termination = term_dict)
 
 #Results Output
 print("")
-print(area_name + '' + function_name + ' results:')
-print(f"Solution: {best_solution}, Fitness: {best_fitness}")
-print(str(pop_size))
+print(area_name + ' ' + function_name + ' results:')
+print(f"Solution: {best_solution}, Fitness({target_objective}): {best_fitness}")
+print(f'Population size: {str(pop_size)}')
+
 
 
 
