@@ -2,6 +2,8 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
+function_name = input('Input function to be used:(5PLF, 4PLF, LF)\n')
+    #[choose from functions: five logistic, linear, four logistic]
 
 def five_logistic(u, params):
     [A, B, C, D, G] = params 
@@ -18,22 +20,27 @@ def linear_function(u, params):
     elif u >= cutout:
         return  0.0
 
+def four_logistic(u, params):
+    [A, B, C, D] = params
+    return ((A - D) / ((1 + (u / C) ** B))) + D 
 
 x = np.linspace(0, 100, 100000)
 
-fivePL = [11.65873468, -5.00452583, 20.37694124,  0.61086232,  0.40594975]
+fivePL = []
+linear = []
+fourPL = []
 
 ### 5PLF Grapher ###
-#y = five_logistic(x, fivePL)
-
-linear = [2.46684696, 16.43110041, 20.14536817]
-
+if function_name == '5PLF':
+    y = five_logistic(x, fivePL)
 ### Linear Grapher ###
-y = np.zeros(100000)
-for t in range(len(y)):
-    y[t] = linear_function(x[t], linear)
-
-
+elif function_name == 'LF':
+    y = np.zeros(100000)
+    for t in range(len(y)):
+        y[t] = linear_function(x[t], linear)
+#### 4PLF Grapher ###
+elif function_name == '4PLF':
+    y = four_logistic(x, fourPL)
 
 fig , ax = plt.subplots()
 
@@ -45,10 +52,10 @@ ax.grid()
 ax.set_ylim([0,1.2])
 ax.set_xlim([0,30])
 
-#plt.plot(x, y, label= '5PLF')
+
 plt.plot(x, y, label = 'LF')
 
-plt.legend()
+#plt.legend()
 os.makedirs('shikoku/PCurves', exist_ok=True)
 plt.savefig('shikoku/PCurves/LF01.png')
 
