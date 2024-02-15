@@ -28,7 +28,7 @@ ax.set_ylim([0,400])
 ax.set_xlim([0,400])
 
 
-plt.scatter(observed[2], estimated.iloc[:,1:38].sum(axis=1), s=1)
+plt.scatter(observed[2], estimated.iloc[:,1:len(estimated.columns)].sum(axis=1), s=1)
 plt.plot(x,y, linewidth=1, color = 'red')
 os.makedirs('shikoku/ESTvsOBS', exist_ok=True)
 plt.savefig('shikoku/ESTvsOBS/LF ESTvsOBS 01.png')
